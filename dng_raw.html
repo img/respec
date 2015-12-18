@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" typeof="bibo:Document oasis:WD" about="" property="dcterms:language" content="en" prefix="bibo: http://purl.org/ontology/bibo/ oasis: http://docs.oasis-open.org/ns/spec">
+<head>
+<meta charset="utf-8">
+<title>DOORS Next Generation Configuration Management Resources</title>
+
+
+<style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #C83500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><link rel="stylesheet" href="https://www.oasis-open.org/spectools/css/spec.css"><link rel="stylesheet" href="https://ndjc.github.io/respec/js/oasis/css/default.css"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
+<body class="h-entry" style="" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+  <p class="logo">
+    
+      <a href="http://www.oasis-open.org/"><img width="203" height="54" src="http://docs.oasis-open.org/templates/OASISLogo.jpg" alt="OASIS" border="0"></a>
+      </p><hr>
+    
+  <p></p>
+  <h1 class="title" id="title" property="dcterms:title">DOORS Next Generation Configuration Management Resources 1.0</h1>
+  
+    <h2 property="bibo:subtitle" id="subtitle">OASIS Working Draft</h2>
+  
+  <h2 property="dcterms:issued" datatype="xsd:dateTime" content="2015-12-14T13:26:01.000Z" id="x14-december-2015"><time class="dt-published" datetime="2015-12-14">14 December 2015</time></h2>
+  <dl>
+    <dt><span class="loc-heading" style="font-size: 125%">Specification URIs</span></dt>
+  </dl>
+  <dl>
+    
+      <br><dt class="loc-heading">This version:</dt>
+      <dd><a class="u-url" href=""></a></dd>
+      <br><dt class="loc-heading">Latest versions:</dt>
+      <dd>none</dd>
+    
+    
+      <br><dt class="loc-heading">Latest editor's draft:</dt>
+      <dd><a href="dng_config_spec.html">dng_config_spec.html</a></dd>
+    
+    
+    
+    
+    
+    
+    <br><dt class="loc-heading">Editor:</dt>
+    <dd class="p-author h-card vcard" rel="bibo:editor" inlist=""><span typeof="foaf:Person"><span property="foaf:name" class="p-name fn">DNG Team</span>, <a rel="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://ibm.com/">IBM</a></span>
+</dd>
+
+    
+    
+    
+     <br><dt class="loc-heading">Namespaces:</dt>
+     
+       
+          <dd><a href="http://jazz.net/ns/rm/dng/config#">http://jazz.net/ns/rm/dng/config#</a></dd>
+       
+     
+    
+    <br><dt class="loc-heading">Abstract:</dt>
+    <dd>
+  <p>This specification defines the representation and behaviour of DNG Configuration Management resources.</p>
+</dd>
+    <br><dt class="loc-heading">Status:</dt>
+    <dd>
+     
+       <p>
+         <em>This section describes the status of this document at the time of its publication.
+         Other documents may supersede this document. A list of current OASIS publications can be found in the <a href="https://www.oasis-open.org/standards">OASIS standards page</a> at
+         https://www.oasis-open.org/standards.</em>
+       </p>
+       Editor's working draft.
+       <p>
+         This document was published by the <a href="undefined">undefined</a> as a Working Draft.
+         
+         
+           If you wish to make comments regarding this document, please send them to 
+           <a href="https://www.oasis-open.org/committees/comments/index.php?wg_abbrev=">@lists.oasis-open.org</a> 
+            (<a href="mailto:-subscribe@lists.oasis-open.org?subject=subscribe">subscribe</a>, 
+             <a href="https://lists.oasis-open.org/archives//">archives</a>).
+         
+         
+         
+         
+           All comments are welcome.
+         
+       </p>
+       
+       
+       
+       
+     
+  
+</dd>
+    <br><dt class="loc-heading">Citation format:</dt>
+    <dd>When referencing this specification the following citation format should be used:
+    <br>[DNG_CONFIG-1.0]
+    <span class="citationTitle">DOORS Next Generation Configuration Management Resources 1.0</span>.
+    Edited by DNG Team.
+    14 December 2015.
+    Working Draft 01.
+    <a class="u-url" href=""></a>.
+    
+    </dd>
+  </dl>
+  
+  
+  
+
+
+</div>
+
+<hr>
+
+<h2 id="notices">Notices</h2>
+
+
+  
+   <p class="copyright">
+     </p><p>Copyright ©
+        
+        OASIS Open ©
+        2015.
+        All Rights Reserved.</p>
+
+<p>All capitalized terms in the following text have the
+meanings assigned to them in the OASIS Intellectual Property Rights Policy (the
+"OASIS IPR Policy"). The full <a href="http://www.oasis-open.org/policies-guidelines/ipr">Policy</a> may be
+found at the OASIS website.</p>
+
+<p>This document and translations of it may be copied and
+furnished to others, and derivative works that comment on or otherwise explain
+it or assist in its implementation may be prepared, copied, published, and
+distributed, in whole or in part, without restriction of any kind, provided
+that the above copyright notice and this section are included on all such
+copies and derivative works. However, this document itself may not be modified
+in any way, including by removing the copyright notice or references to OASIS,
+except as needed for the purpose of developing any document or deliverable
+produced by an OASIS Technical Committee (in which case the rules applicable to
+copyrights, as set forth in the OASIS IPR Policy, must be followed) or as
+required to translate it into languages other than English.</p>
+
+<p>The limited permissions granted above are perpetual and will
+not be revoked by OASIS or its successors or assigns.</p>
+
+<p>This document and the information contained herein is
+provided on an "AS IS" basis and OASIS DISCLAIMS ALL WARRANTIES,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+THE INFORMATION HEREIN WILL NOT INFRINGE ANY OWNERSHIP RIGHTS OR ANY IMPLIED
+WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</p>
+
+<p>OASIS requests that any OASIS Party or any other party that
+believes it has patent claims that would necessarily be infringed by
+implementations of this OASIS Committee Specification or OASIS Standard, to
+notify OASIS TC Administrator and provide an indication of its willingness to
+grant patent licenses to such patent claims in a manner consistent with the IPR
+Mode of the OASIS Technical Committee that produced this specification.</p>
+
+<p>OASIS invites any party to contact the OASIS TC
+Administrator if it is aware of a claim of ownership of any patent claims that
+would necessarily be infringed by implementations of this specification by a
+patent holder that is not willing to provide a license to such patent claims in
+a manner consistent with the IPR Mode of the OASIS Technical Committee that
+produced this specification. OASIS may include such claims on its website, but
+disclaims any obligation to do so.</p>
+
+<p>OASIS takes no position regarding the validity or scope of
+any intellectual property or other rights that might be claimed to pertain to
+the implementation or use of the technology described in this document or the
+extent to which any license under such rights might or might not be available;
+neither does it represent that it has made any effort to identify any such
+rights. Information on OASIS' procedures with respect to rights in any document
+or deliverable produced by an OASIS Technical Committee can be found on the
+OASIS website. Copies of claims of rights made available for publication and
+any assurances of licenses to be made available, or the result of an attempt
+made to obtain a general license or permission for the use of such proprietary
+rights by implementers or users of this OASIS Committee Specification or OASIS
+Standard, can be obtained from the OASIS TC Administrator. OASIS makes no
+representation that any information or list of intellectual property rights
+will at any time be complete, or that any claims in such list are, in fact,
+Essential Claims.</p>
+
+<p>The name "OASIS" is a trademark of <a href="http://www.oasis-open.org/">OASIS</a>, the owner and developer of this
+specification, and should be used only to refer to the organization and its
+official outputs. OASIS welcomes reference to, and implementation and use of,
+specifications, while reserving the right to enforce its marks against
+misleading uses. Please see <span class="MsoHyperlink"><a href="http://www.oasis-open.org/policies-guidelines/trademark">http://www.oasis-open.org/policies-guidelines/trademark</a></span>
+for above guidance.</p>
+      <p></p>
+  
+
+<hr><section id="toc"><h2 class="introductory" aria-level="1" role="heading" id="h2_toc">Table of Contents</h2><ul class="toc" role="directory" id="respecContents"><li class="tocline"><a href="#version-intro" class="tocxref"><span class="secno">1. </span>DOORS Next Generation Configuration Management</a></li><li class="tocline"><a href="#delivery-session-resources" class="tocxref"><span class="secno">2. </span>Delivery Session Resources</a></li><li class="tocline"><a href="#ds-shapes" class="tocxref"><span class="secno">3. </span>Delivery Session Resource Shape</a></li><li class="tocline"><a href="#dp-shapes" class="tocxref"><span class="secno">4. </span>Delivery Policy Resource Shape</a></li><li class="tocline"><a href="#operations" class="tocxref"><span class="secno">5. </span>Supported Operations on Delivery Session Resources</a></li><li class="tocline"><a href="#put_operation" class="tocxref"><span class="secno">6. </span>Behaviour of PUT</a></li></ul></section>
+<hr>
+
+<section id="version-intro" class="informative" typeof="bibo:Chapter" resource="#version-intro" rel="bibo:Chapter">
+<!--OddPage--><h2 aria-level="1" role="heading" id="h2_version-intro"><span class="secno">1. </span>DOORS Next Generation Configuration Management</h2><p><em>This section is non-normative.</em></p>
+  <p>DNG definition and behaviour of resources which extend OSLC specifications, in particular OSLC Configuration Management REF.
+  
+</p></section>
+
+
+<section id="delivery-session-resources" typeof="bibo:Chapter" resource="#delivery-session-resources" rel="bibo:Chapter">
+<!--OddPage--><h2 aria-level="1" role="heading" id="h2_delivery-session-resources"><span class="secno">2. </span>Delivery Session Resources</h2>
+  <p>Represents delivery of changes from one configuration to another.  Source/target/changesets.</p>
+  
+  <p>DS factory, DS resource, Policies.</p>
+</section>
+
+<section id="ds-shapes" typeof="bibo:Chapter" resource="#ds-shapes" rel="bibo:Chapter">
+  <!--OddPage--><h2 aria-level="1" role="heading" id="h2_ds-shapes"><span class="secno">3. </span>Delivery Session Resource Shape</h2>
+  <ul>
+<li><strong>Name:</strong> <code>DeliverySession</code></li>
+<li><strong>URI: </strong> <code>http://jazz.net/ns/rm/dng/config#DeliverySession</code></li>
+<li><strong>Summary:</strong> The shape of a delivery session resource: all delivery session resources <em class="rfc2119" title="MUST">MUST</em> match this shape.</li>
+
+</ul>
+
+<b>DeliverySession Properties</b>
+
+<table class="simple">
+<thead>
+<tr>
+  <th><em>Prefixed Name</em></th>
+  <th><em>Occurs</em></th>
+  <th><em>Read-only</em></th>
+  <th><em>Value-type</em></th>
+  <th><em>Representation</em></th>
+  <th><em>Range</em></th>
+  <th><em>Description</em></th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+  <td><code>dcterms:title</code></td>
+  <td>Zero-or-one</td>
+  <td>unspecified</td>
+  <td>string</td>
+  <td>Either</td>
+  <td>Unspecified</td>
+  <td>Title (reference: Dublin Core) of the resource represented as plain text.</td>
+</tr>
+
+<tr>
+  <td><code>dng_config:policy</code></td>
+  <td>Zero-or-one</td>
+  <td>false</td>
+  <td>AnyResource</td>
+  <td>Inline</td>
+  <td><code>dng_config:DeliveryPolicy</code></td>
+  <td>Delivery policy.</td>
+</tr>
+
+<tr>
+  <td><code>dng_config:source</code></td>
+  <td>Exactly-one</td>
+  <td>true</td>
+  <td>AnyResource</td>
+  <td>Resource</td>
+  <td><code>oslc_config:Configuration</code></td>
+  <td>Source of changes to be delivered.</td>
+</tr>
+
+<tr>
+  <td><code>dng_config:state</code></td>
+  <td>Exactly-one</td>
+  <td>false</td>
+  <td>AnyResource</td>
+  <td>Resource</td>
+  <td>Unspecified</td>
+  <td>State of the delivery session.</td>
+</tr>
+
+<tr>
+  <td><code>dng_config:target</code></td>
+  <td>Exactly-one</td>
+  <td>true</td>
+  <td>AnyResource</td>
+  <td>Resource</td>
+  <td><code>oslc_config:Configuration</code></td>
+  <td>Target of changes to be delivered.</td>
+</tr>
+
+<tr>
+  <td><code>oslc:serviceProvider</code></td>
+  <td>Zero-or-many</td>
+  <td>true</td>
+  <td>Resource</td>
+  <td>Reference</td>
+  <td><code>oslc:ServiceProvider</code></td>
+  <td>A link to the resource's OSLC Service Provider.
+There may be cases when the subject resource is available from a service provider that implements multiple domain specifications,
+which could result in multiple values for this property.</td>
+</tr>
+
+</tbody></table>
+</section>
+
+<section id="dp-shapes" typeof="bibo:Chapter" resource="#dp-shapes" rel="bibo:Chapter">
+  <!--OddPage--><h2 aria-level="1" role="heading" id="h2_dp-shapes"><span class="secno">4. </span>Delivery Policy Resource Shape</h2>
+  <ul>
+<li><strong>Name:</strong> <code>DeliveryPolicy</code></li>
+<li><strong>URI: </strong> <code>http://jazz.net/ns/rm/dng/config#DeliveryPolicy</code></li>
+<li><strong>Summary:</strong> The shape of a delivery policy resource.</li>
+
+</ul>
+
+<b>DeliveryPolicy Properties</b>
+
+<table class="simple">
+<thead>
+<tr>
+  <th><em>Prefixed Name</em></th>
+  <th><em>Occurs</em></th>
+  <th><em>Read-only</em></th>
+  <th><em>Value-type</em></th>
+  <th><em>Representation</em></th>
+  <th><em>Range</em></th>
+  <th><em>Description</em></th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+  <td><code>dng_config:dominantSourceAttribute</code></td>
+  <td>One-or-many</td>
+  <td>unspecified</td>
+  <td>AnyResource</td>
+  <td>Resource</td>
+  <td><code>oslc_config:Configuration</code></td>
+  <td>Attribute which is to be treated as dominant in the source configuration of the delivery.</td>
+</tr>
+
+</tbody></table>
+</section>
+
+
+<section id="operations" typeof="bibo:Chapter" resource="#operations" rel="bibo:Chapter">
+  <!--OddPage--><h2 aria-level="1" role="heading" id="h2_operations"><span class="secno">5. </span>Supported Operations on Delivery Session Resources</h2>
+  <p>DNG supports the following operations on delivery session resources:</p>
+  <ul>
+    <li>GET: Retrieve the state of a delivery session resource.</li>
+    <li>PUT: Update the state of a delivery session resource;  Changing the delivery state of a delivery session will cause the server to
+    commence the delivery operation.</li>
+    <li>DELETE: Delete the specified delivery session resource.</li>
+  </ul>
+</section>
+
+<section id="put_operation" typeof="bibo:Chapter" resource="#put_operation" rel="bibo:Chapter">
+  <!--OddPage--><h2 aria-level="1" role="heading" id="h2_put_operation"><span class="secno">6. </span>Behaviour of PUT</h2>
+    A PUT which attempts to make an invalid state transition will respond with 409 Conflict.
+    <p>
+	Changing the delivery state of a session to <code>dng_config:delivered</code> will cause the server to begin processing the
+	delivery of changes from the source to the target.  This may take some time.
+	</p><p>
+	If that delivery session is already in the process of being delivered, the response to the PUT will be 409 Conflict.
+	</p><p>
+	The server <em class="rfc2119" title="MAY">MAY</em> respond with an error code, or, 200 OK, or it <em class="rfc2119" title="MAY">MAY</em> respond with a 202 Accepted, indicating that the delivery
+	operation may take some time and is being processed in the background.
+	</p><p>
+	In case of 202 response, the server will continue processing the delivery asynchronously. Clients <em class="rfc2119" title="SHOULD">SHOULD</em> poll the delivery
+	session resource until such times as the server responds with a code indicating that the processing is complete.
+	
+ </p><ul>
+    <li>200 OK: The delivery was completed.  The representation in the body will indicate that the state of the session.
+    In case of a successful delivery, the state will be <code>dng_config:delivered</code>; in case of an unsuccessful delivery, it will
+    be in some other state.</li>
+    <li>410: The delivery session is no longer available.  This can happen when the delivery fails in such a way that
+    the session cannot be recovered.  The body of the response <em class="rfc2119" title="MAY">MAY</em> include a description of any delivery failures.</li>
+    <li>404: The delivery session is no longer available.</li>
+  </ul>
+</section>
+
+
+</body></html>

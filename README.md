@@ -1,3 +1,28 @@
+DNG
+===
+install git, nodejs and npm.
+
+clone this repository
+
+switch to the feature/dng-style branch
+
+do a build: "node tools/dng/build-dng-common.js"
+
+this writes build to "builds/dng/respec-dng-common.js"
+
+in that directory, run "npm install"
+
+edit app.js to point the server at your project locations.
+
+start the server
+node app.js
+
+load dng_config_spec.html into browser.
+
+
+
+
+
 ReSpec
 ======
 [![Build Status](https://travis-ci.org/w3c/respec.png?branch=develop)](https://travis-ci.org/w3c/respec)

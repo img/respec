@@ -1,7 +1,7 @@
 {
     "name": "respec",
-    "version": "3.2.25",
-    "description": "Specification Edition Support Tool.",
+    "version": "0.0.1",
+    "description": "Specification Edition Support Tool (DOORS Next Generation Profile).",
     "main": "index.js",
     "directories": {
         "doc": "docs",
@@ -13,14 +13,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/darobin/respec.git"
+        "url": "git://github.com/img/respec.git"
     },
-    "author": "Robin Berjon",
+    "author": "Steve Speicher, Nick Crossley",
     "devDependencies": {
         "express":      "*"
-    ,   "phantomjs":    "*"
     ,   "requirejs":    "2.1.8"
     ,   "prompt":       "0.2.12"
     ,   "async":        "0.2.9"
+    ,   "n3-browser.min": "*"
     }
 }

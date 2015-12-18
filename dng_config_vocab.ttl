@@ -1,0 +1,44 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix jazz_rm: <http://jazz.net/ns/rm#>.
+@prefix dng_config: <http://jazz.net/ns/rm/dng/config#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#>.
+
+
+dng_config: dcterms:description "Vocabulary terms from the DOORS Next Generation Configuration Management namespace."^^rdf:XMLLiteral;
+	dcterms:title "DOORS Next Generation Configuration Management vocabulary";
+	a owl:Ontology;
+	rdfs:label "DNG Configuration Management"@en-US;
+	rdfs:seeAlso <http://jazz.net/>;
+	rdfs:seeAlso <http://open-services.net/ns/config#>;
+	dcterms:source <https://jazz.net/wiki/bin/view/Main/RmResourceVocabulary/rm-vocabulary.ttl> ;
+	dcterms:license <http://jazz.net/ns/license.html> ;
+	dcterms:dateCopyrighted "2012, 2015".
+
+dng_config:DeliverySession a rdfs:Class;
+	rdfs:comment "Delivery Session to deliver versioned changes from one configuration to another.";
+	rdfs:isDefinedBy dng_config:;
+	rdfs:label "Delivery Session"@en-GB.
+	
+dng_config:DeliveryPolicy a rdfs:Class;
+	rdfs:comment "Configures the behaviour of changes that are delivered in a session.";
+	rdfs:isDefinedBy dng_config:;
+	rdfs:label "Delivery Session"@en-GB.
+
+
+dng_config:deliverySessionState a rdf:Property;
+	rdfs:comment "State of a Delivery Session.";
+	rdfs:isDefinedBy dng_config:;
+	rdfs:label "State of a Delivery Session"@en-GB.
+
+dng_config:dominantSourceAttribute a rdf:Property;
+	rdfs:comment "Indicates that an attribute value in the source configuration is to be considered dominant over any corresponding value in the target.";
+	rdfs:isDefinedBy dng_config:;
+	rdfs:label "Dominant Source Attribute"@en-GB.
+	
+	
+	
+	
+	

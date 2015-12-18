@@ -1,0 +1,43 @@
+{{#if isUnofficial}}
+    <p>
+      This document is work in progress. It has
+      no official standing of any kind and does not represent the support or consensus of any
+      standards organization.
+    </p>
+    {{{sotdCustomParagraph}}}
+  {{else}}
+     {{#if isNoTrack}}
+       <p>
+         no track
+       </p>
+       {{{sotdCustomParagraph}}}
+     {{else}}
+       <p>
+         <em>This section describes the status of this document at the time of its publication.
+         Other documents may supersede this document. A list of current DOORS Next Generation specifications may be found WHERE</em>
+       </p>
+       {{{sotdCustomParagraph}}}
+       {{#if implementationReportURI}}
+         <p>
+           Please see the Technical Committee's  <a href='{{implementationReportURI}}'>implementation
+           report</a>.
+         </p>
+       {{/if}}
+       {{#if notRec}}
+         <p>
+           Publication as {{anOrA}} {{textStatus}} does not imply endorsement by the OASIS
+           Membership. This is a draft document and may be updated, replaced or obsoleted by other
+           documents at any time. It is inappropriate to cite this document as other than work in
+           progress.
+         </p>
+       {{/if}}
+       {{#if isLC}}
+         <p>
+           This is a Last Call Working Draft and thus the Working Group has determined that this
+           document has satisfied the relevant technical requirements and is sufficiently stable to
+           advance through the Technical Recommendation process.
+         </p>
+       {{/if}}
+       {{#if addPatentNote}}<p>{{{addPatentNote}}}</p>{{/if}}
+     {{/if}}
+  {{/if}}
