@@ -7,13 +7,18 @@ var express = require('express');
 
 // setup middleware
 var app = express();
-app.use("/builds", express.static(__dirname + "/builds")); //setup static public directory
+// The following /tests and /js are to run the tests.
+app.use("/tests", express.static(__dirname + "/tests"));
+app.use("/js", express.static(__dirname + "/js"));
+app.use("/builds", express.static(__dirname + "/builds"));
 
-// chnage this on to location of docs folder in docs component
+// CHANGE ME:
+// change this on to location of docs folder in docs component
 app.use("/docs", express.static("D:/dev/ng60lv/Server API Docs/docs")); //setup static public directory
 
 // change this to point to the vocabularies dir in services platform component
 app.use("/vocabularies", express.static("D:/dev/ng60lv/com.ibm.rdm.fronting.server/resources/vocabularies")); //setup static public directory
+// END CHANGE ME
 
 // There are many useful environment variables available in process.env,
 // please refer to the following document for detailed description:

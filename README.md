@@ -1,27 +1,66 @@
 DNG
 ===
-install git, nodejs and npm.
+install git, nodejs and npm.  to build stand alone html, phantomjs is also required.
 
-clone this repository
+Step 1
+------
+Start by cloning the git repo and checking out the "feature/dng-style" branch.
+```
+$ git clone -b feature/dng-style https://github.com/img/respec.git
+$ cd respec
+```
+There are w3c, oasis and dng styles in the repo.  The "feature/dng-style" branch contains the dng variant. (The
+variation mechanism is copy-paste-then-rename.)  The dng variant is in directories called "dng".
 
-switch to the feature/dng-style branch
+Install the npm packages that are required to do the build and to run the web server:
+```
+$ npm install
+```
+Step 2
+------
+nodejs is used to build the javascript sources into a single file in "builds/dng/respec-dng-common.js".
+```
+$ node tools/dng/build-dng-common.js
+```
+Check that "builds/dng/respec-dng-common.js" was freshly built.
 
-do a build: "node tools/dng/build-dng-common.js"
+Step 3
+------
+At this point, respec is ready for to use.  For DNG development, I recommend starting a web server to serve this .js file, the 
+vocabulary terms (.ttl files) and the specification html source document.  There is a trivial app.js that does this,
+running under nodejs. You need to fiddle with the app.js source to point to the three locations where resources are to be found:
 
-this writes build to "builds/dng/respec-dng-common.js"
+1. builds directory, js and tests - these are repo-relative so don't have to be changed.
+2. html source for the specifications - this is in the "API Documentation and Samples" component in dng/jazzdev03.
+3. ttl source for the vocabularies and shapes - this is in the "Services Platform" component on dng/jazzdev03.
 
-in that directory, run "npm install"
+In a typical dev env, you'll need to replace the d:/dev/ng60lv (my workspace location) with your own.
 
-edit app.js to point the server at your project locations.
+The express web server serves up the contents of those three directories.  [TODO: set these from command-line or from env.]
+When these edits are done, fire up the web server:
+```
+$ node app.js
+```
+It runs on 3000, so I'll use that in the following. 
 
-start the server
-node app.js
+Check that the server is serving all the resources:
+1. load http://localhost:3000/builds/dng/respec-dng-common.js in browser
+2. load http://localhost:3000/vocabularies/src/dng_config_vocab.ttl in browser
+3. load http://localhost:3000/docs/src/dng_config_spec.html in browser
 
-load dng_config_spec.html into browser.
+The final step here is the "live" respecced view of the html.  Check to make sure that respec is loading
+and processing the ttl files correctly.  (If not, f12 in the browser and watch the network
+tab for 404s.  The most likely cause is the locations set in app.js are wrong.)
+
+Step 4 and beyond
+-----------------
+Work on the spec, ttl, etc and f5 in browser to see fruits of your labours.  We need to work on the UI for the 
+DNG style too. See below about running the tests.
 
 
-
-
+ 
+End of DNG
+==========
 
 ReSpec
 ======
