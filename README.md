@@ -30,7 +30,7 @@ At this point, respec is ready for to use.  For DNG development, I recommend sta
 vocabulary terms (.ttl files) and the specification html source document.  There is a trivial app.js that does this,
 running under nodejs. You need to fiddle with the app.js source to point to the three locations where resources are to be found:
 
-1. builds directory, js and tests - these are repo-relative so don't have to be changed.
+1. (optional) builds directory, js and tests - these are repo-relative so don't have to be changed.
 2. html source for the specifications - this is in the "API Documentation and Samples" component in dng/jazzdev03.
 3. ttl source for the vocabularies and shapes - this is in the "Services Platform" component on dng/jazzdev03.
 
@@ -41,9 +41,8 @@ When these edits are done, fire up the web server:
 ```
 $ node app.js
 ```
-It runs on 3000, so I'll use that in the following. 
-
 Check that the server is serving all the resources:
+
 1. load http://localhost:3000/builds/dng/respec-dng-common.js in browser
 2. load http://localhost:3000/vocabularies/src/dng_config_vocab.ttl in browser
 3. load http://localhost:3000/docs/src/dng_config_spec.html in browser
