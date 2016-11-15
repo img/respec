@@ -11,9 +11,9 @@ define(
             run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "dng/style");
                 if (!conf.specStatus) msg.pub("error", "Configuration 'specStatus' is not set, required for dng/style");
-            	var css = "https://www.dng-open.org/spectools/css/spec.css";
+            	var css = "/builds/dng/css/spec.css";
                 utils.linkCSS(doc, css);
-                utils.linkCSS(doc, 'https://ndjc.github.io/respec/js/dng/css/default.css');
+                utils.linkCSS(doc, '/builds/dng/css/default.css');
                 msg.pub("end", "dng/style");
                 cb();
             }
