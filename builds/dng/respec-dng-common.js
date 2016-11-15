@@ -1,8 +1,8 @@
-/* ReSpec 0.0.1 - Robin Berjon, http://berjon.com/ (@robinberjon) 
+/* ReSpec 0.0.2 - Robin Berjon, http://berjon.com/ (@robinberjon) 
  - Steve Speicher, http://stevespeicher.me/ (@sspeiche) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/sspeiche/respec. */
-respecVersion = '0.0.1';
+respecVersion = '0.0.2';
 
 /*
  RequireJS 2.1.8 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
