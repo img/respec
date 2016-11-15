@@ -13,7 +13,7 @@ app.use("/js", express.static(__dirname + "/js"));
 app.use("/builds", express.static(__dirname + "/builds"));
 var docsDir = process.env.RESPEC_DOCS_DIR || "c:/dev/workspaces/dng/Server API Docs/docs";
 var vocabDir = process.env.RESPEC_VOCAB_DIR || "c:/dev/workspaces/dng/com.ibm.rdm.fronting.server/resources/vocabularies";
-
+console.log("Using ", docsDir, vocabDir);
 // change this on to location of docs folder in docs component
 app.use("/docs", express.static(docsDir)); //setup static public directory
 
