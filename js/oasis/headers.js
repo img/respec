@@ -9,7 +9,6 @@
 //  - specStatus: the short code for the specification's maturity level or type (required)
 //  - shortName: the small name that is used after /TR/ in published reports (required)
 //  - revision: the revision number of the document at its given stage (required)
-//  - oslcVersion: the OSLC version number of the spec (1.0, 2.0, etc.), if any
 //  - citationLabel: the citation label for the spec. If missing, no citation section is generated.
 //  - editors: an array of people editing the document (at least one is required). People
 //      are defined using:
@@ -120,13 +119,13 @@ define(
                 else {
                     ret += "<span" + rn + " class='p-name fn'>" + p.name + "</span>";
                 }
+                if (p.mailto) {
+                    ret += " (<span class='ed_mailto'><a class='u-email email' " + rm + " href='mailto:" + p.mailto + "'>" + p.mailto + "</a></span>)";
+                }
                 if (p.company) {
                     ret += ", ";
                     if (p.companyURL) ret += "<a" + rwu + " class='p-org org h-org h-card' href='" + p.companyURL + "'>" + p.company + "</a>";
                     else ret += p.company;
-                }
-                if (p.mailto) {
-                    ret += ", <span class='ed_mailto'><a class='u-email email' " + rm + " href='mailto:" + p.mailto + "'>" + p.mailto + "</a></span>";
                 }
                 if (p.note) ret += " (" + p.note + ")";
                 if (this.doRDFa !== false ) ret += "</span>\n";
@@ -149,6 +148,7 @@ define(
             ,   CND:            "CND"
             ,   CNPRD:          "CNPRD"
             ,   CN:             "CN"
+            ,   PRD:            "PRD"
             }
         ,   status2rdf: {
                 ED:             "oasis:ED",
@@ -177,11 +177,13 @@ define(
                 ,   CN:             "Committee Note"
                 ,   unofficial:     "Unofficial Draft"
                 ,   base:           "Document"
+                ,   PRD:            "Public Review Draft"
             }
         ,   status2long:    { }
         ,   stdTrackStatus: ["WD", "CSD", "CSPRD", "CS", "COS", "OS", "Errata"]
         ,   noTrackStatus:  ["CND", "CNPRD", "CN", "unofficial", "base"]
         ,   precededByAn:   ["ED"]
+        ,   unPublished:    ["ED","WD","unofficial", "base"]
 
         ,   run:    function (conf, doc, cb, msg) {
                 msg.pub("start", "oasis/headers");
@@ -200,7 +202,6 @@ define(
                 if (!conf.shortName) msg.pub("error", "Missing required configuration: shortName");
                 if (!conf.revision) msg.pub("error", "Missing required configuration: revision");
                 conf.title = doc.title || "No Title";
-                if (conf.oslcVersion) conf.title = conf.title + " " + conf.oslcVersion;
                 if (!conf.subtitle) conf.subtitle = "";
                 if (!conf.publishDate) {
                     conf.publishDate = utils.parseLastModified(doc.lastModified);
@@ -221,6 +222,7 @@ define(
                 if (conf.specStatus === "ED") conf.thisVersion = conf.edDraftURI;
                 // TODO: Determine right URI production
                 // conf.latestVersion = "http://docs.oasis-open.org/" + conf.wgShortName + "/";
+                if (!conf.tcBaseURI) conf.tcBaseURI = "https://www.oasis-open.org/committees";
                 if (conf.previousPublishDate) {
                     if (!conf.previousMaturity)
                         msg.pub("error", "previousPublishDate is set, but not previousMaturity");
@@ -231,11 +233,7 @@ define(
                     conf.prevVersion = "http://docs.oasis-open.org/" + conf.wgShortName + "/" + conf.previousPublishDate.getFullYear() + "/" + pmat + "-" +
                               conf.shortName + "-" + utils.concatDate(conf.previousPublishDate) + "/";
                 }
-                else {
-                    if (conf.specStatus !== "WD" && conf.specStatus !== "ED" && !conf.noStdTrack && !conf.isNoTrack)
-                        msg.pub("error", "Document on track but no previous version.");
-                    if (!conf.prevVersion) conf.prevVersion = "";
-                }
+                if (!conf.prevVersion) conf.prevVersion = "";
                 if (conf.prevRecShortname && !conf.prevRecURI) conf.prevRecURI = "http://docs.oasis-open.org/" + conf.prevRecShortname;
                 if (!conf.editors || conf.editors.length === 0) msg.pub("error", "At least one editor is required");
                 var peopCheck = function (i, it) {
@@ -275,14 +273,38 @@ define(
                 conf.notStd = (conf.specStatus !== "OS");
                 conf.isUnofficial = conf.specStatus === "unofficial";
                 conf.prependOASIS = !conf.isUnofficial;
-                conf.isWD = (conf.specStatus === "WD");
+                conf.isWD = (conf.specStatus === "WD" || conf.specStatus === "ED");
                 conf.isCS = (conf.specStatus === "CS");
                 conf.isCSPR = (conf.specStatus === "CSPRD");
+                conf.isCNPR = (conf.specStatus === "CNPRD");
                 conf.isCOS = (conf.specStatus === "COS");
                 conf.isOS = (conf.specStatus === "OS");
                 conf.isAE = (conf.specStatus === "Errata");
                 conf.dashDate = utils.concatDate(conf.publishDate, "-");
                 conf.publishISODate = utils.isoDate(conf.publishDate) ;
+
+                if ($.inArray(conf.specStatus, this.unPublished) < 0) {
+                   if (conf.isCSPR) {
+                      conf.docStatus = [
+                        this.status2text["CSD"] + " " + conf.revision,
+                        conf.textStatus + " " + conf.revision
+                      ];
+                      conf.textStatus1 = this.status2text["CSD"];
+                      conf.textStatus2 = this.status2text["PRD"];
+                   }
+                   else if (conf.isCNPR) {
+                      conf.docStatus = [
+                        this.status2text["CND"] + " " + conf.revision,
+                        conf.textStatus + " " + conf.revision
+                      ];
+                      conf.textStatus1 = this.status2text["CND"];
+                      conf.textStatus2 = this.status2text["PRD"];
+                   }
+                   else {
+                      conf.docStatus = [conf.textStatus + " " + conf.revision];
+                   }
+                }
+
                 // configuration done - yay!
 
                 // annotate html element with RFDa
@@ -325,7 +347,6 @@ define(
                     conf.multipleWGs = false;
                     conf.wgHTML = "<a href='" + conf.wgURI + "'>" + conf.wg + "</a>";
                 }
-                if (conf.isCSPR && !conf.lcEnd) msg.pub("error", "Status is CSPR but no lcEnd is specified");
 
                 conf.stdNotExpected = (!conf.isStdTrack && conf.maturity == "WD");
 

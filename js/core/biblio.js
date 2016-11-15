@@ -149,23 +149,20 @@ define(
                 refs = refs.normativeReferences
                                 .concat(refs.informativeReferences)
                                 .concat(localAliases);
+		console.log(refs);
                 if (refs.length) {
-                    var url = "https://specref.jit.su/bibrefs?refs=" + refs.join(",");
+                    var url = "https://labs.w3.org/specrefs/bibrefs?refs=" + refs.join(",");
                     $.ajax({
                         dataType:   "json"
                     ,   url:        url
                     ,   success:    function (data) {
                             conf.biblio = data || {};
-                            // override biblio data
-                            if (conf.localBiblio) {
-                                for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
-                            }
-                            bibref(conf, msg);
-                            finish();
+			    makeRefs(conf, msg, finish);
                         }
-                    ,   error:      function (xhr, status, error) {
-                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
-                            finish();
+                    ,   error: function (xhr, status, error) {
+                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ").  Using only localBiblio.");
+                            conf.biblio = {};
+			    makeRefs(conf, msg, finish);
                         }
                     });
                 }
@@ -174,3 +171,12 @@ define(
         };
     }
 );
+
+
+function makeRefs(conf, msg, finish) {
+    if (conf.localBiblio) {
+        for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
+    }
+    bibref(conf, msg);
+    finish();
+}

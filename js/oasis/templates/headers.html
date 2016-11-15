@@ -6,8 +6,10 @@
     {{/if}}
   </p>
   <h1 class='title' id='title'{{#if doRDFa}} property='dcterms:title'{{/if}}>{{title}}</h1>
-  {{#if textStatus}}
-    <h2 {{#if doRDFa}}property='bibo:subtitle' {{/if}}id='subtitle'>{{#if prependOASIS}}OASIS {{/if}}{{textStatus}}</h2>
+  {{#if docStatus}}
+    {{#each docStatus}}
+      <h2 {{#if doRDFa}}property='bibo:subtitle' {{/if}}id='subtitle'>{{this}}</h2>
+    {{/each}}
   {{/if}}
   <h2 {{#if doRDFa}}property="dcterms:issued" datatype="xsd:dateTime" content="{{publishISODate}}"{{/if}}><time class='dt-published' datetime='{{dashDate}}'>{{publishHumanDate}}</time></h2>
   <dl>
@@ -86,8 +88,44 @@
         {{/if}}
       {{/each}}
     {{/if}}
+    {{#if additionalArtifacts}}
+     <br/><dt class='loc-heading'>Additional artifacts:</dt>
+     <dd>This specification is one component of a Work Product that also includes:
+     <ul>
+     {{#each additionalArtifacts}}
+       <li>
+       {{#if title}}{{title}},{{/if}}
+       {{#if href}}<a href='{{href}}'>{{href}}</a>{{/if}}
+       </li>
+     {{/each}}
+     </ul></dd>
+    {{/if}}
+    {{#if supersedes}}
+     <br/><dt class='loc-heading'>Related work:</dt>
+     <dd>This specification replaces or supersedes:
+     <ul>
+     {{#each supersedes}}
+       <li>
+       {{#if title}}{{title}},{{/if}}
+       {{#if href}}<a href='{{href}}'>{{href}}</a>{{/if}}
+       </li>
+     {{/each}}
+     </ul></dd>
+    {{/if}}
+    {{#if relatedWork}}
+     {{#unless supersedes}}<br/><dt class='loc-heading'>Related work:</dt>{{/unless}}
+     <dd>This specification is related to:
+     <ul>
+     {{#each relatedWork}}
+       <li>
+       {{#if title}}{{title}},{{/if}}
+       {{#if href}}<a href='{{href}}'>{{href}}</a>{{/if}}
+       </li>
+     {{/each}}
+     </ul></dd>
+    {{/if}}
     {{#if namespaces}}
-     <br/><dt class='loc-heading'>Namespaces:</dt>
+     <br/><dt class='loc-heading'>RDF Namespaces:</dt>
      {{#each namespaces}}
        {{#if href}}
           <dd><a href='{{href}}'>{{href}}</a></dd>
@@ -100,13 +138,16 @@
     <dd>{{{status}}}</dd>
     {{#if citationLabel}}<br/><dt class='loc-heading'>Citation format:</dt>
     <dd>When referencing this specification the following citation format should be used:
-    <br>[{{citationLabel}}]
+    <p>
+    <span class='citationLabel'><strong>[{{citationLabel}}]</strong></span><br>
     <span class='citationTitle'>{{title}}</span>.
     Edited by {{editorsHTML}}.
     {{publishHumanDate}}.
-    {{textStatus}} {{revision}}.
-    <a class='u-url' href='{{thisVersion}}'>{{thisVersion}}</a>.
+    {{#if prependOASIS}}OASIS {{/if}}{{#if textStatus1}}{{textStatus1}} {{revision}} / {{textStatus2}} {{revision}}.
+    {{else}}{{textStatus}} {{revision}}{{/if}}
+    {{#if thisVersion}}<a class='u-url' href='{{thisVersion}}'>{{thisVersion}}</a>.{{/if}}
     {{#if latestVersion}}Latest version: <a href='{{latestVersion}}'>{{latestVersion}}</a>.{{/if}}
+    </p>
     </dd>{{/if}}
   </dl>
   {{#if errata}}

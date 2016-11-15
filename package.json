@@ -18,6 +18,7 @@
     "author": "Robin Berjon",
     "devDependencies": {
         "express":      "*"
+    ,   "phantomjs-prebuilt":    "*"
     ,   "requirejs":    "2.1.8"
     ,   "prompt":       "0.2.12"
     ,   "async":        "0.2.9"
