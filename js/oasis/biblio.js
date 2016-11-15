@@ -1,5 +1,5 @@
 
-// Module core/biblio
+// Module oasis/biblio
 // Handles bibliographic references
 // Configuration:
 //  - localBiblio: override or supplement the official biblio with your own.
@@ -61,7 +61,8 @@ define(
             ;
 
             if (!informs.length && !norms.length && !conf.refNote) return;
-            var $refsec = $("<section id='references' class='appendix'><h2>References</h2></section>").appendTo($("body"));
+            var $refsec = $("#references");
+            if ($refsec.length <= 0) $refsec = $("<section id='references' class='appendix'><h2>References</h2></section>").appendTo($("body"));
             if (conf.refNote) $("<p></p>").html(conf.refNote).appendTo($refsec);
 
             var types = ["Normative", "Informative"];
@@ -127,7 +128,7 @@ define(
                 if (badrefs.hasOwnProperty(item)) msg.pub("error", "Bad reference: [" + item + "] (appears " + badrefs[item] + " times)");
             }
         };
-        
+
         return {
             stringifyRef: stringifyRef,
             run:    function (conf, doc, cb, msg) {
@@ -149,7 +150,6 @@ define(
                 refs = refs.normativeReferences
                                 .concat(refs.informativeReferences)
                                 .concat(localAliases);
-		console.log(refs);
                 if (refs.length) {
                     var url = "https://labs.w3.org/specrefs/bibrefs?refs=" + refs.join(",");
                     $.ajax({
@@ -157,12 +157,16 @@ define(
                     ,   url:        url
                     ,   success:    function (data) {
                             conf.biblio = data || {};
-			    makeRefs(conf, msg, finish);
+                            // override biblio data
+                            if (conf.localBiblio) {
+                                for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
+                            }
+                            bibref(conf, msg);
+                            finish();
                         }
-                    ,   error: function (xhr, status, error) {
-                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ").  Using only localBiblio.");
-                            conf.biblio = {};
-			    makeRefs(conf, msg, finish);
+                    ,   error:      function (xhr, status, error) {
+                            msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ")");
+                            finish();
                         }
                     });
                 }
@@ -171,12 +175,3 @@ define(
         };
     }
 );
-
-
-function makeRefs(conf, msg, finish) {
-    if (conf.localBiblio) {
-        for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
-    }
-    bibref(conf, msg);
-    finish();
-}

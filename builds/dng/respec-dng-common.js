@@ -6619,29 +6619,18 @@ define(
                                 .concat(localAliases);
 		console.log(refs);
                 if (refs.length) {
-                    var url = "http://specref.org/?q=" + refs.join(",");
+                    var url = "https://labs.w3.org/specrefs/bibrefs?refs=" + refs.join(",");
                     $.ajax({
                         dataType:   "json"
                     ,   url:        url
                     ,   success:    function (data) {
                             conf.biblio = data || {};
-			makeRefs(conf, msg);
-                            // override biblio data
-                            if (conf.localBiblio) {
-                                for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
-                            }
-                            bibref(conf, msg);
-                            finish();
+			    makeRefs(conf, msg, finish);
                         }
-                    ,   error:      function (xhr, status, error) {
+                    ,   error: function (xhr, status, error) {
                             msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ").  Using only localBiblio.");
                             conf.biblio = {};
-                            // override biblio data
-                            if (conf.localBiblio) {
-                                for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
-                            }
-                            bibref(conf, msg);
-                            finish();
+			    makeRefs(conf, msg, finish);
                         }
                     });
                 }
@@ -6651,6 +6640,15 @@ define(
     }
 );
 
+
+function makeRefs(conf, msg, finish) {
+    if (conf.localBiblio) {
+        for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
+    }
+    bibref(conf, msg);
+    finish();
+}
+;
 
 // Module core/rdfa
 // Support for RDFa is spread to multiple places in the code, including templates, as needed by
