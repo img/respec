@@ -1,8 +1,8 @@
-/* ReSpec 0.0.3 - Robin Berjon, http://berjon.com/ (@robinberjon) 
+/* ReSpec 0.0.2 - Robin Berjon, http://berjon.com/ (@robinberjon) 
  - Steve Speicher, http://stevespeicher.me/ (@sspeiche) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/sspeiche/respec. */
-respecVersion = '0.0.3';
+respecVersion = '0.0.2';
 
 /*
  RequireJS 2.1.8 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
@@ -6617,6 +6617,7 @@ define(
                 refs = refs.normativeReferences
                                 .concat(refs.informativeReferences)
                                 .concat(localAliases);
+		console.log(refs);
                 if (refs.length) {
                     var url = "https://labs.w3.org/specrefs/bibrefs?refs=" + refs.join(",");
                     $.ajax({
@@ -6624,12 +6625,12 @@ define(
                     ,   url:        url
                     ,   success:    function (data) {
                             conf.biblio = data || {};
-			    makeRefs(conf, msg, bibref, finish);
+			    makeRefs(conf, msg, finish);
                         }
                     ,   error: function (xhr, status, error) {
                             msg.pub("error", "Error loading references from '" + url + "': " + status + " (" + error + ").  Using only localBiblio.");
                             conf.biblio = {};
-			    makeRefs(conf, msg, bibref, finish);
+			    makeRefs(conf, msg, finish);
                         }
                     });
                 }
@@ -6640,7 +6641,7 @@ define(
 );
 
 
-function makeRefs(conf, msg, bibref, finish) {
+function makeRefs(conf, msg, finish) {
     if (conf.localBiblio) {
         for (var k in conf.localBiblio) conf.biblio[k] = conf.localBiblio[k];
     }
