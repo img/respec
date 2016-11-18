@@ -30,7 +30,6 @@ define([
         ,   "dng/style"
         ,   "dng/headers"
 /*        ,   "dng/abstract" */
-        ,   "dng/conformance"
         ,   "core/data-transform"
         ,   "core/data-include"
         ,   "core/inlines"
@@ -46,11 +45,11 @@ define([
         ,   "core/dfn"
         ,   "core/fix-headers"
         ,   "core/structure"
-        ,   "dng/informative"
+        ,   "oasis/informative"
         ,   "core/id-headers"
-        ,   "dng/aria"
-        ,   "dng/vocab"        
-        ,   "dng/shape"        
+        ,   "oasis/aria"
+        ,   "oasis/vocab"        
+        ,   "oasis/shape"        
         ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"
@@ -66,12 +65,12 @@ define([
 );
 
 function vocabToSpec(util, content, uri) {
-	var vocab = require("dng/vocab");
+	var vocab = require("oasis/vocab");
 	return vocab.vocabToSpec(util, content, uri);
 }
 
 function shapeToSpec(util, content, uri) {
-	var shape = require("dng/shape");
+	var shape = require("oasis/shape");
 	return shape.shapeToSpec(util, content, uri);
 }
 
