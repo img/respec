@@ -1,6 +1,6 @@
 {
     "name": "respec",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Specification Edition Support Tool (DOORS Next Generation Profile).",
     "main": "index.js",
     "directories": {
