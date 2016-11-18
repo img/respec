@@ -1,8 +1,8 @@
-/* ReSpec 0.0.3 - Robin Berjon, http://berjon.com/ (@robinberjon) 
+/* ReSpec 0.0.4 - Robin Berjon, http://berjon.com/ (@robinberjon) 
  - Steve Speicher, http://stevespeicher.me/ (@sspeiche) */
 /* Documentation: http://w3.org/respec/. */
 /* See original source for licenses: https://github.com/sspeiche/respec. */
-respecVersion = '0.0.3';
+respecVersion = '0.0.4';
 
 /*
  RequireJS 2.1.8 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
@@ -4133,27 +4133,6 @@ define(
                 $(noticesTmpl(conf)).insertBefore($("#toc"));
 
                 msg.pub("end", "dng/headers");
-                cb();
-            }
-        };
-    }
-);
-
-define('tmpl!dng/templates/conformance.html', ['handlebars'], function (hb) { return Handlebars.compile('<h2>Conformance</h2>\n<p>\n  As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,\n  and notes in this specification are non-normative. Everything else in this specification is\n  normative.\n</p>\n<p>\n  The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED, MAY,\n  and OPTIONAL in this specification are to be interpreted as described in [[!RFC2119]].\n</p>\n');});
-
-
-// Module dng/conformance
-// Handle the conformance section properly.
-
-define(
-    'dng/conformance',["tmpl!dng/templates/conformance.html"],
-    function (confoTmpl) {
-        return {
-            run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "dng/conformance");
-                var $confo = $("#conformance");
-                if ($confo.length) $confo.prepend(confoTmpl(conf));
-                msg.pub("end", "dng/conformance");
                 cb();
             }
         };
@@ -8401,18 +8380,18 @@ define(
 );
 
 
-// Module dng/informative
+// Module oasis/informative
 // Mark specific sections as informative, based on CSS
 
 define(
-    'dng/informative',[],
+    'oasis/informative',[],
     function () {
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "dng/informative");
+                msg.pub("start", "oasis/informative");
                 $("section.informative").find("> h2:first, > h3:first, > h4:first, > h5:first, > h6:first")
                                         .after("<p><em>This section is non-normative.</em></p>");
-                msg.pub("end", "dng/informative");
+                msg.pub("end", "oasis/informative");
                 cb();
             }
         };
@@ -8444,16 +8423,16 @@ define(
     }
 );
 
-// Module dng/aria
+// Module oasis/aria
 // Adds wai-aria landmarks and roles to entire document.
 // Introduced by Shane McCarron (shane@aptest.com) from the OASIS PFWG
 
 define(
-    'dng/aria',["core/utils"], // load this to be sure that the jQuery extensions are loaded
+    'oasis/aria',["core/utils"], // load this to be sure that the jQuery extensions are loaded
     function (utils) {
         return {
             run:    function (conf, doc, cb, msg) {
-                msg.pub("start", "dng/aria");
+                msg.pub("start", "oasis/aria");
                 // ensure all headers after sections have
                 // headings and aria-level
                 var $secs = $("section", doc)
@@ -8500,7 +8479,7 @@ define(
                         $item.attr('id', 'h_note_'+noteNum);
                     }
                 });
-                msg.pub("end", "dng/aria");
+                msg.pub("end", "oasis/aria");
                 cb();
             }
         };
@@ -8516,22 +8495,22 @@ define("n3-browser.min", (function (global) {
     };
 }(this)));
 
-define('tmpl!dng/templates/vocab.html', ['handlebars'], function (hb) { return Handlebars.compile('<section>\n<h2>Vocabulary Details</h2>\n<p>The namespace URI for this vocabulary is: \n<code>{{vocabURI}}</code></p>\n<p>{{description}}</p>\n{{#if seeAlso}}<strong>See Also:</strong><ul>{{/if}}\n  {{#each seeAlso}}\n    {{#if object}}<li><a href="{{object}}">{{object}}</a></li>{{/if}}\n  {{/each}}\n{{#if seeAlso}}</ul>{{/if}}\n\n{{#if classes}}\n<section><h2>RDFS Classes in this namespace</h2>\n<p>{{#each classes}}<a href="#{{name}}">{{name}}</a>, {{/each}}</p>\n</section>\n{{/if}}\n\n{{#if props}}\n<section><h2>RDF Properties in this namespace</h2>\n<p>{{#each props}}<a href="#{{name}}">{{name}}</a>, {{/each}}</p>\n</section>\n{{/if}}\n\n{{#if desc}}\n<section><h2>RDF Descriptions(Individuals) in this namespace</h2>\n<p>{{#each desc}}<a href="#{{name}}">{{name}}</a>, {{/each}}</p>\n</section>\n{{/if}}\n\n\n{{#each classes}}\n<section>\n<h2 class="TML" id="{{name}}">{{name}}</h2>\n<p>\n<verbatim>{{subject}}</verbatim>\n<em>{{name}}</em> is an RDFS class.</p>\n<p>{{comment}}</p>\n{{#if seeAlso}}\n<strong>See Also:</strong>\n<ul>\n{{#each seeAlso}}<li><a href="{{object}}">{{object}}</a></li>{{/each}}\n</ul>\n{{/if}}\n</section>\n{{/each}}\n\n{{#each props}}\n<section>\n<h2 class="TML" id="{{name}}">{{name}}</h2>\n<p>\n<verbatim>{{subject}}</verbatim>\n<em>{{name}}</em> is an RDF property.</p>\n<p>{{comment}}</p>\n{{#if seeAlso}}\n<strong>See Also:</strong>\n<ul>\n{{#each seeAlso}}<li><a href="{{object}}">{{object}}</a></li>{{/each}}\n</ul>\n{{/if}}\n</section>\n{{/each}}\n\n\n{{#each desc}}\n<section>\n<h2 class="TML" id="{{name}}">{{name}}</h2>\n<p>\n<verbatim>{{subject}}</verbatim>\n<em>{{name}}</em> is an RDF description.</p>\n<p>{{comment}}</p>\n{{#if seeAlso}}\n<strong>See Also:</strong>\n<ul>\n{{#each seeAlso}}<li><a href="{{object}}">{{object}}</a></li>{{/each}}\n</ul>\n{{/if}}\n</section>\n{{/each}}\n\n</section>\n');});
+define('tmpl!oasis/templates/vocab.html', ['handlebars'], function (hb) { return Handlebars.compile('<section>\n<h2>Vocabulary Details</h2>\n<p>The namespace URI for this vocabulary is:\n<code>{{vocabURI}}</code></p>\n<p>{{description}}</p>\n{{#if seeAlso}}<strong>See Also:</strong><ul>{{/if}}\n  {{#each seeAlso}}\n    {{#if object}}<li><a href="{{object}}">{{object}}</a></li>{{/if}}\n  {{/each}}\n{{#if seeAlso}}</ul>{{/if}}\n\n{{#if classes}}\n<section><h2>RDFS Classes in this namespace</h2>\n<p>{{#each classes}}<a href="#{{name}}">{{name}}</a>, {{/each}}</p>\n</section>\n{{/if}}\n\n{{#if props}}\n<section><h2>RDF Properties in this namespace</h2>\n<p>{{#each props}}<a href="#{{name}}">{{name}}</a>, {{/each}}</p>\n</section>\n{{/if}}\n\n{{#if desc}}\n<section><h2>RDF Descriptions(Individuals) in this namespace</h2>\n<p>{{#each desc}}<a href="#{{name}}">{{name}}</a>, {{/each}}</p>\n</section>\n{{/if}}\n\n\n{{#each classes}}\n<section>\n{{#if archaic}}\n<div class="archaic">\n<h2 class="TML" id="{{name}}">{{name}} <i style="font-size:75%;">(Archaic term)</i></h2>\n{{else}}\n<h2 class="TML" id="{{name}}">{{name}}</h2>\n{{/if}}\n<p><verbatim>{{subject}}</verbatim></p>\n<p><em>{{name}}</em> is an RDFS class.</p>\n<p>{{comment}}</p>\n{{#if seeAlso}}\n<strong>See Also:</strong>\n<ul>\n{{#each seeAlso}}<li><a href="{{object}}">{{object}}</a></li>{{/each}}\n</ul>\n{{/if}}\n{{#if archaic}}\n</div>\n{{/if}}\n</section>\n{{/each}}\n\n{{#each props}}\n<section>\n{{#if archaic}}\n<div class="archaic">\n<h2 class="TML" id="{{name}}">{{name}} <i style="font-size:75%;">(Archaic term)</i></h2>\n{{else}}\n<h2 class="TML" id="{{name}}">{{name}}</h2>\n{{/if}}\n<p><verbatim>{{subject}}</verbatim></p>\n<p><em>{{name}}</em> is an RDF property.</p>\n<p>{{comment}}</p>\n{{#if seeAlso}}\n<strong>See Also:</strong>\n<ul>\n{{#each seeAlso}}<li><a href="{{object}}">{{object}}</a></li>{{/each}}\n</ul>\n{{/if}}\n{{#if archaic}}\n</div>\n{{/if}}\n</section>\n{{/each}}\n\n\n{{#each desc}}\n<section>\n<h2 class="TML" id="{{name}}">{{name}}</h2>\n<p><verbatim>{{subject}}</verbatim></p>\n<p><em>{{name}}</em> is an RDF description.</p>\n<p>{{comment}}</p>\n{{#if seeAlso}}\n<strong>See Also:</strong>\n<ul>\n{{#each seeAlso}}<li><a href="{{object}}">{{object}}</a></li>{{/each}}\n</ul>\n{{/if}}\n</section>\n{{/each}}\n\n</section>\n');});
 
 
-// Module dng/vocab
+// Module oasis/vocab
 // Handle the RDF vocabulary properly.
 
 define(
-    'dng/vocab',["handlebars",
+    'oasis/vocab',["handlebars",
      "core/utils",
      "n3-browser.min",
-     "tmpl!dng/templates/vocab.html"],
+     "tmpl!oasis/templates/vocab.html"],
     function (hb, utils, N3, vocabTmpl) {
         return {
             run: function (conf, doc, cb, msg) {
-                msg.pub("start", "dng/vocab");
-                msg.pub("end", "dng/vocab");
+                msg.pub("start", "oasis/vocab");
+                msg.pub("end", "oasis/vocab");
                 cb();
             },
             vocabToSpec: function(util, content) {
@@ -8577,6 +8556,7 @@ define(
 			    var rdfsSeeAlso = "http://www.w3.org/2000/01/rdf-schema#seeAlso";
 			    var rdfsIsDefinedBy = "http://www.w3.org/2000/01/rdf-schema#isDefinedBy";
 			    var dcDescription = "http://purl.org/dc/terms/description";
+                var termStatus = "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status";
 
 			    var onto = store.find(null, rdfType, owlOnto);
 			    if (onto.length != 1) { console.log("Can't locate owl:Ontology"); return null;}
@@ -8602,14 +8582,25 @@ define(
 			    var inputMap = [{predicate: rdfsLabel, name: "name"},
 			                    {predicate: rdfsComment, name: "comment"},
 			                    {predicate: rdfsSeeAlso, name: "seeAlso", multiValue: true},
-			                    {predicate: rdfsIsDefinedBy, name: "isDefinedBy"}];
+			                    {predicate: rdfsIsDefinedBy, name: "isDefinedBy"},
+			                    {predicate: termStatus, name: "termStatus"}
+			                    ];
 			    fillHBJson(store, classes, inputMap);
                 classes.sort(function(a, b) { return a.name.localeCompare(b.name); });
+                $.each(classes, function(i, it) {
+                    it.archaic = (it.termStatus && (it.termStatus === 'archaic'));
+                });
 
 			    var props = store.find(null, rdfType, rdfProp);
 			    conf.props = props;
 			    fillHBJson(store, props, inputMap);
                 props.sort(function(a, b) { return a.name.localeCompare(b.name); });
+                $.each(props, function(i, it) {
+                    if (it.termStatus) {
+                     console.log("term status " + it.termStatus + " found on "+it.name);
+                     it.archaic = (it.termStatus && (it.termStatus == 'archaic'));
+                    }
+                });
 
 			    var desc = store.find(null, rdfType, rdfDesc);
 			    conf.desc = desc;
@@ -8626,22 +8617,22 @@ define(
 );
 
 
-define('tmpl!dng/templates/shape.html', ['handlebars'], function (hb) { return Handlebars.compile('<ul>\n<li><strong>Name:</strong> <code>{{name}}</code></li>\n<li><strong>URI: </strong> <code>{{typeURI}}</code></li>\n<li><strong>Summary:</strong> {{{title}}}</li>\n{{#if description}}<li><strong>Description:</strong> {{{description}}}</li>{{/if}}\n</ul>\n\n<b>{{name}} Properties</b>\n\n<table class="simple">\n<thead>\n<tr>\n  <th><em>Prefixed Name</em></th>\n  <th><em>Occurs</em></th>\n  <th><em>Read-only</em></th>\n  <th><em>Value-type</em></th>\n  <th><em>Representation</em></th>\n  <th><em>Range</em></th>\n  <th><em>Description</em></th>\n</tr>\n</thead>\n<tbody>\n{{#each props}}\n<tr>\n  <td><code>{{prefixedName}}</code></td>\n  <td>{{occurs}}</td>\n  <td>{{readOnly}}</td>\n  <td>{{valType}}</td>\n  <td>{{rep}}</td>\n  <td>{{#eachRange range}}<code>{{this}}</code>{{/eachRange}}</td>\n  <td>{{{description}}}</td>\n</tr>\n{{/each}}\n</table>');});
+define('tmpl!oasis/templates/shape.html', ['handlebars'], function (hb) { return Handlebars.compile('{{#if typeURI}}\n<ul>\n<li><strong>Name:</strong> <code>{{name}}</code></li>\n<li><strong>Type URI: </strong> <code>{{typeURI}}</code></li>\n<li><strong>Summary:</strong> {{{title}}}</li>\n{{#if description}}<li><strong>Description:</strong> {{{description}}}</li>{{/if}}\n</ul>\n{{else}}\n<p>{{{title}}}</p>\n{{#if description}}<p>{{{description}}}</p>{{/if}}\n{{/if}}\n\n{{#if name}}<b>{{name}} Properties</b>{{/if}}\n\n<table class="simple">\n<thead>\n<tr>\n  <th><em>Prefixed Name</em></th>\n  <th><em>Occurs</em></th>\n  <th><em>Read-only</em></th>\n  <th><em>Value-type</em></th>\n  <th><em>Representation</em></th>\n  <th><em>Range</em></th>\n  <th><em>Description</em></th>\n</tr>\n</thead>\n<tbody>\n{{#each props}}\n<tr>\n  <td><code>{{prefixedName}}</code></td>\n  <td>{{occurs}}</td>\n  <td>{{readOnly}}</td>\n  <td>{{valType}}</td>\n  <td>{{rep}}</td>\n  <td>{{#eachRange range}}<code>{{this}}</code>{{/eachRange}}</td>\n  <td>{{{description}}}</td>\n</tr>\n{{/each}}\n</table>');});
 
 
-// Module dng/shape
+// Module oasis/shape
 // Handle the OSLC Resource Shape to HTML table transform
 
 define(
-    'dng/shape',["handlebars",
+    'oasis/shape',["handlebars",
      "core/utils",
      "n3-browser.min",
-     "tmpl!dng/templates/shape.html"],
+     "tmpl!oasis/templates/shape.html"],
     function (hb, utils, N3, shapeTmpl) {
         return {
             run: function (conf, doc, cb, msg) {
-                msg.pub("start", "dng/shape");
-                msg.pub("end", "dng/shape");
+                msg.pub("start", "oasis/shape");
+                msg.pub("end", "oasis/shape");
                 cb();
             },
             shapeToSpec: function(util, content, uri) {
@@ -8668,7 +8659,7 @@ define(
     			    var propDefaults = {
     			    	occurs:   {long: "http://open-services.net/ns/core#Zero-or-many", short: "Zero-or-many"},
     			    	readOnly: {long: "unspecified", short: "unspecified" },
-    			    	valType:  {long: "http://www.w3.org/2001/XMLSchema#string", short: "string"},
+    			    	valType:  {long: "unspecified", short: "unspecified" },
     			    	rep:      {long: "http://open-services.net/ns/core#Either", short: "Either"},
     			    	range:    {long: [], short: []},
     			    	description: {long: "", short: ""}
@@ -8779,8 +8770,12 @@ define(
 			    conf.subject = shapeSubject;
 
 			    var typeURI = store.find(shapeSubject, oslcDescribes, null);
-			    conf.typeURI = typeURI[0].object;
-			    conf.name = /#.*$/.exec(conf.typeURI)[0].substring(1);
+			    // Allow missing oslc:describes, or oslc:describes == oslc:Any, to indicate these are common properties
+			    if (typeURI.length > 0 && typeURI[0].object != "http://open-services.net/ns/core#Any")
+                {
+                   conf.typeURI = typeURI[0].object;
+                   conf.name = /[#/][^/]*$/.exec(conf.typeURI)[0].substring(1);
+                }
 
 			    var title = store.find(shapeSubject, dcTitle, null);
 			    conf.title = N3.Util.getLiteralValue(title[0].object);
@@ -8791,24 +8786,15 @@ define(
 			    var props = store.find(shapeSubject, oslcProp, null);
  			    conf.props = props;
 
-//			    var validValues = {
-//			    	oslcValType: [
-//			    	        "http://www.w3.org/2001/XMLSchema#boolean",
-//			    		    "http://www.w3.org/2001/XMLSchema#dateTime",
-//			    		    "http://www.w3.org/2001/XMLSchema#decimal",
-//			    		    "http://www.w3.org/2001/XMLSchema#double",
-//			    		    "http://www.w3.org/2001/XMLSchema#float",
-//			    		    "http://www.w3.org/2001/XMLSchema#integer",
-//						 	"http://www.w3.org/2001/XMLSchema#string",
-//						 	"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral",
-//						 	"http://open-services.net/ns/core#Resource",
-//						 	"http://open-services.net/ns/core#LocalResource",
-//						 	"http://open-services.net/ns/core#AnyResource"],
-//					oslcOccurs: ["http://open-services.net/ns/core#Exactly-one",
-//					             "http://open-services.net/ns/core#Zero-or-one",
-//					             "http://open-services.net/ns/core#Zero-or-many",
-//					             "http://open-services.net/ns/core#One-or-many"],
-//			    };
+			    var oslcLitTypes = {
+			    	        "boolean":true,
+			    		    "dateTime":true,
+			    		    "decimal":true,
+			    		    "double":true,
+			    		    "float":true,
+			    		    "integer":true,
+						 	"string":true,
+						 	"XMLLiteral":true};
 
 			    var inputMap = [{predicate: oslcOccurs, name: "occurs"},
 			                    {predicate: oslcReadonly, name: "readOnly"},
@@ -8822,18 +8808,18 @@ define(
 			    // Map from object values to text/label entries for the spec tables
 			    fillHBJson(store, props, inputMap);
 
-			    // Need to set the name and prefixedName
+			    // Need to set the name and prefixedName, and to adjust representation
 			    $.each(props, function(i, it) {
 			    	if (!it.name && it.propURI)
-			    		it.name = /#.*$/.exec(it.propURI)[0].substring(1);
+			    		it.name = /[#/][^/]*$/.exec(it.propURI)[0].substring(1);
 			    	if (!it.prefixedName && it.propURI)
 			    		it.prefixedName = getPrefixedName(it.propURI);
+			    	if (oslcLitTypes[it.valType])
+			    	    it.rep = "N/A";
 			    });
                 props.sort(function(a, b) { return a.prefixedName.localeCompare(b.prefixedName); });
 
-
 			    var html = shapeTmpl(conf);
-
 				return html;
             }
         };
@@ -8944,7 +8930,6 @@ define('profile-dng-common',[
         ,   "dng/style"
         ,   "dng/headers"
 /*        ,   "dng/abstract" */
-        ,   "dng/conformance"
         ,   "core/data-transform"
         ,   "core/data-include"
         ,   "core/inlines"
@@ -8960,11 +8945,11 @@ define('profile-dng-common',[
         ,   "core/dfn"
         ,   "core/fix-headers"
         ,   "core/structure"
-        ,   "dng/informative"
+        ,   "oasis/informative"
         ,   "core/id-headers"
-        ,   "dng/aria"
-        ,   "dng/vocab"        
-        ,   "dng/shape"        
+        ,   "oasis/aria"
+        ,   "oasis/vocab"        
+        ,   "oasis/shape"        
         ,   "core/shiv"
         ,   "core/remove-respec"
         ,   "core/location-hash"
@@ -8980,12 +8965,12 @@ define('profile-dng-common',[
 );
 
 function vocabToSpec(util, content, uri) {
-	var vocab = require("dng/vocab");
+	var vocab = require("oasis/vocab");
 	return vocab.vocabToSpec(util, content, uri);
 }
 
 function shapeToSpec(util, content, uri) {
-	var shape = require("dng/shape");
+	var shape = require("oasis/shape");
 	return shape.shapeToSpec(util, content, uri);
 }
 
